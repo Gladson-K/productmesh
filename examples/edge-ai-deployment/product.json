@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "id": "edge-ai-deployment",
+    "name": "Edge AI Model Deployment",
+    "version": "0.1.0",
+    "lifecycle_stage": "integration"
+  },
+  "description": "ONNX, quantization, accelerator and application integration reference case.",
+  "requirements": [
+    {
+      "id": "REQ-201",
+      "statement": "Model input shape and dtype match runtime adapter.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-201"
+      ]
+    },
+    {
+      "id": "REQ-202",
+      "statement": "Target device supports runtime and operator set.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-202"
+      ]
+    },
+    {
+      "id": "REQ-203",
+      "statement": "Model artifact and quantization metadata are versioned together.",
+      "criticality": "medium",
+      "verified_by": [
+        "TEST-203"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "CMP-MODEL",
+      "name": "Quantized vision model",
+      "kind": "model",
+      "target": "ONNX",
+      "interfaces": [
+        "IF-TENSOR"
+      ],
+      "sbom_name": "tiny-vision-model",
+      "version": "1.0.0",
+      "purl": "pkg:generic/tiny-vision-model@1.0.0"
+    },
+    {
+      "id": "CMP-RUNTIME",
+      "name": "Qualcomm QNN runtime",
+      "kind": "runtime",
+      "target": "QNN",
+      "interfaces": [
+        "IF-TENSOR"
+      ],
+      "sbom_name": "qnn-runtime",
+      "version": "2.28.0",
+      "purl": "pkg:generic/qnn-runtime@2.28.0"
+    },
+    {
+      "id": "CMP-ORT",
+      "name": "ONNX Runtime CPU",
+      "kind": "runtime",
+      "target": "x86-64",
+      "interfaces": [
+        "IF-TENSOR"
+      ],
+      "sbom_name": "onnxruntime",
+      "version": "1.18.0",
+      "purl": "pkg:pypi/onnxruntime@1.18.0"
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "IF-TENSOR",
+      "name": "Tensor contract",
+      "protocol": "tensor",
+      "version": "1",
+      "schema": {
+        "required": [
+          "input_name",
+          "shape",
+          "dtype",
+          "layout"
+        ]
+      }
+    }
+  ],
+  "environments": [
+    {
+      "id": "ENV-QNN",
+      "name": "Qualcomm QNN target",
+      "os": "QNX/Linux",
+      "hardware_target": "QCS6490",
+      "logic_voltage": "3.3V"
+    },
+    {
+      "id": "ENV-CPU",
+      "name": "x86 edge server",
+      "os": "Linux",
+      "hardware_target": "x86-64",
+      "logic_voltage": "12V"
+    }
+  ],
+  "tests": [
+    {
+      "id": "TEST-201",
+      "name": "Tensor contract",
+      "status": "passed",
+      "checks": {
+        "requirement": "REQ-201",
+        "component": "CMP-MODEL",
+        "interface": "IF-TENSOR"
+      }
+    },
+    {
+      "id": "TEST-202",
+      "name": "Runtime and operator support",
+      "status": "passed",
+      "checks": {
+        "requirement": "REQ-202",
+        "component": "CMP-RUNTIME",
+        "environment": "ENV-QNN"
+      }
+    },
+    {
+      "id": "TEST-203",
+      "name": "Artifact and quantization versioning",
+      "status": "passed",
+      "checks": {
+        "requirement": "REQ-203",
+        "component": "CMP-MODEL"
+      }
+    }
+  ],
+  "release": {
+    "block_on_high": true
+  },
+  "devices": [
+    {
+      "id": "DEV-QCS6490",
+      "name": "Qualcomm QCS6490 edge box",
+      "board": "qnn-qcs6490",
+      "firmware": "CMP-RUNTIME",
+      "environment": "ENV-QNN",
+      "logic_voltage": "3.3V",
+      "interfaces": [
+        "IF-TENSOR"
+      ],
+      "constraints": {
+        "min_ram_kb": 4096
+      },
+      "specs": {
+        "ram_kb": 8192
+      }
+    },
+    {
+      "id": "DEV-CPU",
+      "name": "x86 inference server",
+      "board": "x86-64",
+      "firmware": "CMP-ORT",
+      "environment": "ENV-CPU",
+      "logic_voltage": "12V",
+      "interfaces": [
+        "IF-TENSOR"
+      ],
+      "constraints": {
+        "min_ram_kb": 8192
+      },
+      "specs": {
+        "ram_kb": 16384
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "MDL-TINY",
+      "component": "CMP-MODEL",
+      "path": "models/tiny.onnx",
+      "sha256": "0d5a6e87aaeab7dbdc994e5332ede0df5cae2f6296f7c605d217ccec02c7e8c0",
+      "quantization": {
+        "path": "models/tiny.quant.json",
+        "scheme": "int8"
+      },
+      "expected": {
+        "ir_version": 8,
+        "opset": 17,
+        "producer_name": "productmesh-example",
+        "inputs": [
+          {
+            "name": "input",
+            "dtype": "float32",
+            "shape": [
+              "batch",
+              3,
+              224,
+              224
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "name": "output",
+            "dtype": "float32",
+            "shape": [
+              "batch",
+              1000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "sbom": {
+    "id": "SBOM-EDGE",
+    "path": "sbom.cdx.json",
+    "required_components": [
+      "pkg:generic/tiny-vision-model@1.0.0",
+      "pkg:pypi/onnxruntime@1.18.0",
+      "pkg:generic/qnn-runtime@2.28.0"
+    ]
+  }
+}

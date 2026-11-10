@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "id": "mobile-api-contract",
+    "name": "Mobile App + Backend Contract",
+    "version": "0.1.0",
+    "lifecycle_stage": "integration"
+  },
+  "description": "Client/server schema, auth and environment drift reference case.",
+  "requirements": [
+    {
+      "id": "REQ-101",
+      "statement": "Mobile client and backend agree on API version and fields.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-101"
+      ]
+    },
+    {
+      "id": "REQ-102",
+      "statement": "Token issuer and audience match across environments.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-102"
+      ]
+    },
+    {
+      "id": "REQ-103",
+      "statement": "Minimum supported OS is declared.",
+      "criticality": "medium",
+      "verified_by": [
+        "TEST-103"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "CMP-APP",
+      "name": "Mobile app",
+      "kind": "application",
+      "target": "Android 10+",
+      "interfaces": [
+        "IF-REST"
+      ]
+    },
+    {
+      "id": "CMP-SVC",
+      "name": "Backend service",
+      "kind": "service",
+      "target": "container",
+      "interfaces": [
+        "IF-REST"
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "IF-REST",
+      "name": "REST API",
+      "protocol": "HTTP/JSON",
+      "version": "v2",
+      "schema": {
+        "required": [
+          "user_id",
+          "access_token"
+        ]
+      }
+    }
+  ],
+  "environments": [
+    {
+      "id": "ENV-DEV",
+      "name": "Development",
+      "os": "container",
+      "api_version": "v2",
+      "auth_issuer": "https://auth.dev.example"
+    },
+    {
+      "id": "ENV-STAGING",
+      "name": "Staging",
+      "os": "container",
+      "api_version": "v2",
+      "auth_issuer": "https://auth.staging.example"
+    },
+    {
+      "id": "ENV-PROD",
+      "name": "Production",
+      "os": "container",
+      "api_version": "v2",
+      "auth_issuer": "https://auth.example"
+    }
+  ],
+  "tests": [
+    {
+      "id": "TEST-101",
+      "name": "OpenAPI contract diff",
+      "status": "passed",
+      "checks": {
+        "requirement": "REQ-101",
+        "interface": "IF-REST"
+      }
+    },
+    {
+      "id": "TEST-102",
+      "name": "Token issuer and audience",
+      "status": "passed",
+      "checks": {
+        "requirement": "REQ-102"
+      }
+    },
+    {
+      "id": "TEST-103",
+      "name": "Minimum OS declaration",
+      "status": "passed",
+      "checks": {
+        "requirement": "REQ-103"
+      }
+    }
+  ],
+  "release": {
+    "block_on_high": true
+  },
+  "api_contracts": [
+    {
+      "id": "API-REST",
+      "interface": "IF-REST",
+      "current": "specs/openapi-v2.json",
+      "baseline": "specs/openapi-v1.json",
+      "allow_breaking": false
+    }
+  ]
+}

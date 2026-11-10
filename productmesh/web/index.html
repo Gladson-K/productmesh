@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ProductMesh V2</title>
+<style>
+:root{--ink:#14243b;--muted:#5c6b80;--line:#dce2eb;--bg:#f4f6fa;--accent:#1c5d91;--ok:#1f7a4d;--bad:#b3261e;--warn:#9a6700}
+*{box-sizing:border-box}
+body{font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);margin:0}
+header{background:linear-gradient(120deg,#14243b,#1c3d63);color:white;padding:30px 6%}
+header h1{margin:0 0 6px;font-size:28px}
+header p{margin:0;opacity:.8}
+main{max-width:1100px;margin:26px auto;padding:0 18px}
+.card{background:white;padding:20px;border:1px solid var(--line);border-radius:12px;margin:14px 0;box-shadow:0 1px 2px rgba(20,36,59,.04)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.metric{border:1px solid var(--line);border-radius:10px;padding:14px}
+.metric b{display:block;font-size:26px;line-height:1.1}
+.metric span{color:var(--muted);font-size:13px}
+button,select{padding:9px 12px;border-radius:7px;border:1px solid #9aaabd;font:inherit}
+button{background:var(--accent);color:white;cursor:pointer}
+button.secondary{background:white;color:var(--ink)}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{text-align:left;border-bottom:1px solid var(--line);padding:8px 6px;font-size:14px}
+th{color:var(--muted);font-weight:600}
+.badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600}
+.ready{background:#e6f4ec;color:var(--ok)}
+.blocked{background:#fdecea;color:var(--bad)}
+.issue{padding:10px 12px;background:#fff8e8;border-left:4px solid var(--warn);margin:8px 0;border-radius:4px}
+.issue.critical,.issue.high{background:#fff0f0;border-color:var(--bad)}
+.issue.info{background:#eef4fa;border-color:var(--accent)}
+.issue small{color:var(--muted)}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header>
+  <h1>ProductMesh</h1>
+  <p>Connect every stage. Detect every mismatch. V2 workspace engine.</p>
+</header>
+<main>
+  <div class="card">
+    <div class="row">
+      <button onclick="loadWorkspace()">Audit workspace</button>
+      <button class="secondary" onclick="loadExamples()">Refresh products</button>
+      <span id="status" class="muted"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Workspace</h2>
+    <div class="grid" id="metrics"><span class="muted">Loading workspace...</span></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Products</h2>
+    <div class="row">
+      <select id="product"></select>
+      <button onclick="runAudit()">Audit selected product</button>
+    </div>
+    <div id="products"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Device matrix</h2>
+    <div id="devices"><span class="muted">No device data yet.</span></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Issues</h2>
+    <div id="issues"><span class="muted">Run a workspace audit to see issues.</span></div>
+  </div>
+
+  <div class="card muted">
+    <b>V2 boundaries:</b> checks declared manifests, Git repository state, OpenAPI contract diffs, SBOM inventory, ONNX metadata, device compatibility, evidence hashes and release policy. It does not perform physical electrical measurements, PCB parsing or hardware-in-the-loop testing.
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function setStatus(text){$('status').textContent=text}
+function badge(ready){return `<span class="badge ${ready?'ready':'blocked'}">${ready?'READY':'BLOCKED'}</span>`}
+function issueList(issues){
+  if(!issues||!issues.length)return '<span class="muted">No consistency issues found.</span>';
+  return issues.map(i=>`<div class="issue ${esc(i.severity)}"><b>${esc(i.severity)} · ${esc(i.code)}</b> <small>(${esc(i.where)})</small><br>${esc(i.message)}</div>`).join('');
+}
+async function loadExamples(){
+  try{
+    const data=await (await fetch('/api/examples')).json();
+    $('product').innerHTML=data.examples.map(name=>`<option value="${esc(name)}">${esc(name)}</option>`).join('');
+    setStatus(`${data.examples.length} product manifest(s) found`);
+  }catch(error){setStatus('Could not load products: '+error)}
+}
+async function loadWorkspace(){
+  setStatus('Auditing workspace...');
+  try{
+    const data=await (await fetch('/api/workspace')).json();
+    if(data.error)throw new Error(data.error);
+    const s=data.summary||{};
+    $('metrics').innerHTML=`
+      <div class="metric"><b>${esc(s.products??0)}</b><span>products</span></div>
+      <div class="metric"><b>${esc(s.devices??0)}</b><span>devices</span></div>
+      <div class="metric"><b>${esc(s.issues??0)}</b><span>issues</span></div>
+      <div class="metric"><b>${esc(s.blocked??0)}</b><span>blocked products</span></div>
+      <div class="metric"><b>${badge(data.release_ready)}</b><span>workspace release gate</span></div>`;
+    $('products').innerHTML=`<table><thead><tr><th>Product</th><th>Release</th><th>Issues</th><th>Devices</th></tr></thead><tbody>${
+      (data.products||[]).map(p=>`<tr><td>${esc(p.id)}</td><td>${badge(p.release_ready)}</td><td>${esc(p.issues??0)}</td><td>${esc((p.result?.devices||[]).length)}</td></tr>`).join('')
+    }</tbody></table>`;
+    $('devices').innerHTML=(data.devices||[]).length?`<table><thead><tr><th>Product</th><th>Device</th><th>Board</th><th>Firmware</th><th>Voltage</th><th>Status</th></tr></thead><tbody>${
+      data.devices.map(d=>`<tr><td>${esc(d.product)}</td><td>${esc(d.name||d.id)}</td><td>${esc(d.board)}</td><td>${esc(d.firmware)}</td><td>${esc(d.logic_voltage)}</td><td>${badge(d.status==='ready')}</td></tr>`).join('')
+    }</tbody></table>`:'<span class="muted">No devices declared.</span>';
+    $('issues').innerHTML=issueList(data.issues);
+    setStatus('Workspace audit complete');
+  }catch(error){setStatus('Workspace audit failed: '+error)}
+}
+async function runAudit(){
+  const name=$('product').value;
+  if(!name)return;
+  setStatus(`Auditing ${name}...`);
+  try{
+    const data=await (await fetch('/api/audit/'+encodeURIComponent(name))).json();
+    if(data.error)throw new Error(data.error);
+    const s=data.summary||{};
+    $('metrics').innerHTML=`
+      <div class="metric"><b>${esc(s.requirements??0)}</b><span>requirements</span></div>
+      <div class="metric"><b>${esc(s.components??0)}</b><span>components</span></div>
+      <div class="metric"><b>${esc(s.devices??0)}</b><span>devices</span></div>
+      <div class="metric"><b>${esc(s.issues??0)}</b><span>issues</span></div>
+      <div class="metric"><b>${badge(data.release_ready)}</b><span>release gate</span></div>`;
+    $('devices').innerHTML=(data.devices||[]).length?`<table><thead><tr><th>Device</th><th>Board</th><th>Firmware</th><th>Voltage</th></tr></thead><tbody>${
+      data.devices.map(d=>`<tr><td>${esc(d.name||d.id)}</td><td>${esc(d.board)}</td><td>${esc(d.firmware)}</td><td>${esc(d.logic_voltage)}</td></tr>`).join('')
+    }</tbody></table>`:'<span class="muted">No devices declared.</span>';
+    $('issues').innerHTML=issueList(data.issues);
+    setStatus(`${name} audit complete`);
+  }catch(error){setStatus('Audit failed: '+error)}
+}
+loadExamples();
+loadWorkspace();
+</script>
+</body>
+</html>

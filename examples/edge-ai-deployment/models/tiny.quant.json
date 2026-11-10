@@ -1,0 +1,7 @@
+{
+  "scheme": "int8",
+  "calibration_dataset": "imagenet-calibration-2026-01",
+  "model_sha256": "0d5a6e87aaeab7dbdc994e5332ede0df5cae2f6296f7c605d217ccec02c7e8c0",
+  "input_scale": 0.0078125,
+  "input_zero_point": 0
+}

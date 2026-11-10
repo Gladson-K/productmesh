@@ -1,0 +1,44 @@
+name: CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Unit tests
+        run: python -m pytest -q
+      - name: Audit all example products
+        run: |
+          for manifest in examples/*/product.json; do
+            python -m productmesh.cli audit "$manifest"
+          done
+      - name: Audit multi-product workspace
+        run: python -m productmesh.cli workspace audit examples/workspace.json
+      - name: OpenAPI contract diff
+        run: |
+          python -m productmesh.cli openapi diff \
+            examples/mobile-api-contract/specs/openapi-v1.json \
+            examples/mobile-api-contract/specs/openapi-v2.json \
+            --fail-on-breaking
+      - name: SBOM inspection
+        run: python -m productmesh.cli sbom inspect examples/edge-ai-deployment/sbom.cdx.json
+      - name: ONNX metadata inspection
+        run: python -m productmesh.cli model inspect examples/edge-ai-deployment/models/tiny.onnx
+      - name: Generate SARIF release report
+        run: python -m productmesh.cli workspace audit examples/workspace.json --format sarif --output productmesh.sarif
+      - name: Upload SARIF
+        if: always() && hashFiles('productmesh.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: productmesh.sarif

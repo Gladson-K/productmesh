@@ -1,0 +1,11 @@
+{
+  "name": "ProductMesh V2",
+  "build": {"dockerfile": "../Dockerfile"},
+  "postCreateCommand": "./setup.sh --dev",
+  "forwardPorts": [8080],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  }
+}

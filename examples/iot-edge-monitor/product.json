@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "id": "iot-edge-monitor",
+    "name": "IoT Edge Monitor",
+    "version": "0.1.0",
+    "lifecycle_stage": "integration"
+  },
+  "description": "",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "statement": "Sample temperature and humidity every 5 seconds or faster.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-001"
+      ]
+    },
+    {
+      "id": "REQ-002",
+      "statement": "Publish telemetry using the documented HTTP JSON contract.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-002"
+      ]
+    },
+    {
+      "id": "REQ-003",
+      "statement": "Operate on ESP32 with 3.3V logic.",
+      "criticality": "high",
+      "verified_by": [
+        "TEST-003"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "CMP-FW",
+      "name": "ESP32 firmware",
+      "kind": "firmware",
+      "target": "esp32",
+      "interfaces": [
+        "IF-SENSOR",
+        "IF-HTTP"
+      ]
+    },
+    {
+      "id": "CMP-API",
+      "name": "Telemetry API",
+      "kind": "service",
+      "target": "python3.11+",
+      "interfaces": [
+        "IF-HTTP"
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "IF-SENSOR",
+      "name": "I2C sensor bus",
+      "protocol": "I2C",
+      "voltage": "3.3V",
+      "pins": {
+        "sda": "GPIO21",
+        "scl": "GPIO22"
+      }
+    },
+    {
+      "id": "IF-HTTP",
+      "name": "Telemetry REST contract",
+      "protocol": "HTTP/JSON",
+      "version": "v1",
+      "schema": {
+        "required": [
+          "device_id",
+          "temperature_c",
+          "humidity_pct",
+          "timestamp"
+        ]
+      }
+    }
+  ],
+  "environments": [
+    {
+      "id": "ENV-DEV",
+      "name": "Developer setup",
+      "os": "Linux/Windows/macOS",
+      "python": "3.11+",
+      "hardware_target": "ESP32 DevKit",
+      "logic_voltage": "3.3V"
+    }
+  ],
+  "tests": [
+    {
+      "id": "TEST-001",
+      "name": "Sampling interval",
+      "checks": {
+        "requirement": "REQ-001"
+      },
+      "status": "passed"
+    },
+    {
+      "id": "TEST-002",
+      "name": "Telemetry API contract",
+      "checks": {
+        "requirement": "REQ-002",
+        "interface": "IF-HTTP"
+      },
+      "status": "passed"
+    },
+    {
+      "id": "TEST-003",
+      "name": "Board and voltage compatibility",
+      "checks": {
+        "requirement": "REQ-003",
+        "component": "CMP-FW",
+        "environment": "ENV-DEV",
+        "voltage": "3.3V"
+      },
+      "status": "passed"
+    }
+  ],
+  "release": {
+    "block_on_high": true
+  },
+  "devices": [
+    {
+      "id": "DEV-ESP32-S3",
+      "name": "ESP32-S3 DevKitC",
+      "board": "esp32-s3-devkitc-1",
+      "firmware": "CMP-FW",
+      "environment": "ENV-DEV",
+      "logic_voltage": "3.3V",
+      "interfaces": [
+        "IF-SENSOR",
+        "IF-HTTP"
+      ],
+      "constraints": {
+        "min_flash_mb": 8,
+        "min_ram_kb": 512
+      },
+      "specs": {
+        "flash_mb": 8,
+        "ram_kb": 512
+      }
+    },
+    {
+      "id": "DEV-ESP32-C3",
+      "name": "ESP32-C3 Mini",
+      "board": "esp32-c3-mini",
+      "firmware": "CMP-FW",
+      "environment": "ENV-DEV",
+      "logic_voltage": "3.3V",
+      "interfaces": [
+        "IF-SENSOR",
+        "IF-HTTP"
+      ],
+      "constraints": {
+        "min_flash_mb": 4,
+        "min_ram_kb": 400
+      },
+      "specs": {
+        "flash_mb": 4,
+        "ram_kb": 400
+      }
+    }
+  ]
+}

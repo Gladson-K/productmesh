@@ -1,0 +1,39 @@
+name: ProductMesh Release Gate
+description: Audit a product manifest or multi-product workspace and enforce the declared release policy.
+author: ProductMesh contributors
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  manifest:
+    description: Path to a product manifest.
+    required: false
+    default: examples/iot-edge-monitor/product.json
+  workspace:
+    description: Path to a workspace.json. When set, all workspace products are audited.
+    required: false
+    default: ""
+  format:
+    description: Report format (json, sarif or markdown).
+    required: false
+    default: sarif
+  output:
+    description: Report output path.
+    required: false
+    default: productmesh.sarif
+
+runs:
+  using: composite
+  steps:
+    - name: Install ProductMesh
+      shell: bash
+      run: python -m pip install "${{ github.action_path }}"
+    - name: Run release gate
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.workspace }}" ]; then
+          python -m productmesh.cli workspace audit "${{ inputs.workspace }}" --format "${{ inputs.format }}" --output "${{ inputs.output }}"
+        else
+          python -m productmesh.cli audit "${{ inputs.manifest }}" --format "${{ inputs.format }}" --output "${{ inputs.output }}"
+        fi

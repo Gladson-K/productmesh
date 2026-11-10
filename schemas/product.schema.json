@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://productmesh.dev/schemas/product.schema.json",
+  "title": "ProductMesh Product Manifest",
+  "type": "object",
+  "required": ["project", "requirements", "components", "interfaces", "environments", "tests"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "description": {"type": "string"},
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "version"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "lifecycle_stage": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement"],
+        "properties": {
+          "id": {"type": "string"},
+          "statement": {"type": "string"},
+          "criticality": {"enum": ["low", "medium", "high", "critical"]},
+          "verified_by": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "kind"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "kind": {"type": "string"},
+          "target": {"type": "string"},
+          "version": {"type": "string"},
+          "purl": {"type": "string"},
+          "sbom_name": {"type": "string"},
+          "interfaces": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "protocol"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "protocol": {"type": "string"},
+          "version": {"type": "string"},
+          "voltage": {"type": "string"},
+          "pins": {"type": "object"},
+          "schema": {"type": "object"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "environments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "os": {"type": "string"},
+          "python": {"type": "string"},
+          "hardware_target": {"type": "string"},
+          "logic_voltage": {"type": "string"},
+          "api_version": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "board", "firmware", "logic_voltage"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "board": {"type": "string"},
+          "firmware": {"type": "string"},
+          "environment": {"type": "string"},
+          "logic_voltage": {"type": "string"},
+          "interfaces": {"type": "array", "items": {"type": "string"}},
+          "constraints": {
+            "type": "object",
+            "properties": {
+              "min_flash_mb": {"type": "number"},
+              "min_ram_kb": {"type": "number"},
+              "min_clock_mhz": {"type": "number"}
+            },
+            "additionalProperties": true
+          },
+          "specs": {
+            "type": "object",
+            "properties": {
+              "flash_mb": {"type": "number"},
+              "ram_kb": {"type": "number"},
+              "clock_mhz": {"type": "number"}
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "role": {"type": "string"},
+          "component": {"type": "string"},
+          "path": {"type": "string"},
+          "remote": {"type": "string"},
+          "ref": {"type": "string"},
+          "commit": {"type": "string"},
+          "required_clean": {"type": "boolean"},
+          "optional": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "repository": {
+      "oneOf": [
+        {"type": "string"},
+        {
+          "type": "object",
+          "properties": {
+            "path": {"type": "string"},
+            "remote": {"type": "string"},
+            "ref": {"type": "string"},
+            "commit": {"type": "string"},
+            "required_clean": {"type": "boolean"},
+            "optional": {"type": "boolean"}
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "api_contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["current"],
+        "properties": {
+          "id": {"type": "string"},
+          "interface": {"type": "string"},
+          "current": {"type": "string"},
+          "baseline": {"type": "string"},
+          "allow_breaking": {"type": "boolean"},
+          "require_baseline": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "sbom": {
+      "oneOf": [
+        {"type": "string"},
+        {
+          "type": "object",
+          "properties": {
+            "id": {"type": "string"},
+            "path": {"type": "string"},
+            "required_components": {"type": "array", "items": {"type": "string"}},
+            "check_components": {"type": "boolean"},
+            "require_licenses": {"type": "boolean"}
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "sboms": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {"type": "string"},
+          {
+            "type": "object",
+            "required": ["path"],
+            "properties": {
+              "id": {"type": "string"},
+              "path": {"type": "string"},
+              "required_components": {"type": "array", "items": {"type": "string"}},
+              "check_components": {"type": "boolean"},
+              "require_licenses": {"type": "boolean"}
+            },
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "id": {"type": "string"},
+          "component": {"type": "string"},
+          "path": {"type": "string"},
+          "sha256": {"type": "string"},
+          "strict": {"type": "boolean"},
+          "expected": {
+            "type": "object",
+            "properties": {
+              "ir_version": {
+                "oneOf": [
+                  {"type": "integer"},
+                  {"type": "object", "properties": {"min": {"type": "integer"}, "max": {"type": "integer"}}}
+                ]
+              },
+              "opset": {
+                "oneOf": [
+                  {"type": "integer"},
+                  {"type": "object", "additionalProperties": {"type": "integer"}}
+                ]
+              },
+              "producer_name": {"type": "string"},
+              "inputs": {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}},
+              "outputs": {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}}
+            },
+            "additionalProperties": true
+          },
+          "quantization": {
+            "oneOf": [
+              {"type": "string"},
+              {
+                "type": "object",
+                "properties": {
+                  "path": {"type": "string"},
+                  "scheme": {"type": "string"}
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "status": {"enum": ["passed", "failed", "blocked", "not_run", "skipped", "pending"]},
+          "executed_at": {"type": "string"},
+          "checks": {
+            "type": "object",
+            "properties": {
+              "requirement": {"type": "string"},
+              "component": {"type": "string"},
+              "interface": {"type": "string"},
+              "environment": {"type": "string"},
+              "voltage": {"type": "string"}
+            },
+            "additionalProperties": true
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {"type": "string"},
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {"type": "string"},
+                    "sha256": {"type": "string"},
+                    "kind": {"type": "string"}
+                  },
+                  "additionalProperties": true
+                }
+              ]
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "release": {
+      "type": "object",
+      "properties": {
+        "block_on_critical": {"type": "boolean"},
+        "block_on_high": {"type": "boolean"},
+        "block_on_medium": {"type": "boolean"},
+        "block_on_low": {"type": "boolean"},
+        "max_critical": {"type": "integer"},
+        "max_high": {"type": "integer"},
+        "max_medium": {"type": "integer"},
+        "allow_dirty_repo": {"type": "boolean"},
+        "require_sbom": {"type": "boolean"},
+        "require_openapi": {"type": "boolean"},
+        "require_evidence": {"type": "boolean"},
+        "required_requirements": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "2.0",
+  "workspace": {
+    "id": "productmesh-examples",
+    "name": "ProductMesh Example Workspace"
+  },
+  "products": [
+    {
+      "id": "iot-edge-monitor",
+      "manifest": "iot-edge-monitor/product.json"
+    },
+    {
+      "id": "mobile-api-contract",
+      "manifest": "mobile-api-contract/product.json"
+    },
+    {
+      "id": "edge-ai-deployment",
+      "manifest": "edge-ai-deployment/product.json"
+    }
+  ]
+}

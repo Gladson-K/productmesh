@@ -1,0 +1,23 @@
+# Project map
+
+- `productmesh/`: lifecycle audit engine, CLI and local HTTP server
+  - `audit.py`: core checks and orchestration
+  - `devices.py`: multi-device compatibility
+  - `repo.py`: Git repository inspection
+  - `openapi.py`: OpenAPI contract diff
+  - `sbom.py`: CycloneDX/SPDX ingestion
+  - `onnx_meta.py`: ONNX metadata parser
+  - `evidence.py`: test status and evidence hashes
+  - `policy.py`: release gate
+  - `workspace.py`: multi-product workspace audit
+  - `report.py`: SARIF and Markdown reports
+- `examples/`: three products plus `workspace.json`, OpenAPI specs, SBOM, ONNX model and quantization metadata
+- `schemas/`: product and workspace JSON Schemas
+- `productmesh/web/`: local dashboard asset
+- `tests/`: audit, device, workspace, repository, OpenAPI, SBOM, ONNX, evidence, report, CLI and server tests
+- `docs/`: architecture, V2 feature guide, research, use cases and roadmap
+- `action.yml`: reusable GitHub Action release gate
+- `.github/workflows/`: CI
+- `.devcontainer/`: dev container
+- `setup.sh`: reproducible environment setup
+- `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`: project policy and release history
