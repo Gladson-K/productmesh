@@ -5,11 +5,12 @@
 ```bash
 ./setup.sh --dev
 .venv/bin/python -m pytest -q
+.venv/bin/ruff check productmesh tests
 ```
 
 ## Adding a product example
 
-1. Create `examples/<product-id>/product.json` using the schema in `schemas/product.schema.json`.
+1. Create `examples/<product-id>/product.json` using the schema in `schemas/product.schema.json` and validate it with `productmesh validate`.
 2. Add any artifacts (OpenAPI specs, SBOM, ONNX model, evidence) under the product directory.
 3. Add the product to `examples/workspace.json`.
 4. Run `productmesh workspace audit examples/workspace.json`.
@@ -19,8 +20,9 @@
 
 - Add a module under `productmesh/` or extend an existing one.
 - Return issues through the audit `add(code, severity, where, message, **details)` callback.
-- Add the check to `docs/V2_FEATURES.md`.
+- Add the check to `docs/V2_FEATURES.md` and, when relevant, `docs/ROADMAP.md`.
 - Add a positive and a negative test under `tests/`.
+- Update root and packaged schemas together when adding manifest fields.
 - Keep core runtime standard-library only. Optional dependencies belong in `pyproject.toml`.
 
 ## Style

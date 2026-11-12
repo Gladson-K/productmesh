@@ -220,5 +220,40 @@
       "pkg:pypi/onnxruntime@1.18.0",
       "pkg:generic/qnn-runtime@2.28.0"
     ]
+  },
+  "firmware": [
+    {
+      "id": "FW-QNN",
+      "component": "CMP-RUNTIME",
+      "path": "firmware/qnn-runtime.bin",
+      "version": "2.28.0",
+      "required": true
+    }
+  ],
+  "lab": {
+    "path": "../lab.json",
+    "required": true
+  },
+  "benchmarks": [
+    {
+      "id": "BENCH-ORT-CPU",
+      "component": "CMP-ORT",
+      "model": "MDL-TINY",
+      "path": "benchmarks/ort-cpu.json",
+      "runtime": "onnxruntime",
+      "device": "DEV-CPU",
+      "model_sha256": "0d5a6e87aaeab7dbdc994e5332ede0df5cae2f6296f7c605d217ccec02c7e8c0",
+      "max_latency_ms": 50,
+      "min_throughput_fps": 20
+    }
+  ],
+  "observability": {
+    "id": "OTEL-EDGE",
+    "path": "observability/spans.json",
+    "required_attributes": [
+      "service.name",
+      "productmesh.product",
+      "productmesh.device"
+    ]
   }
 }

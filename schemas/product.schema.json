@@ -3,18 +3,41 @@
   "$id": "https://productmesh.dev/schemas/product.schema.json",
   "title": "ProductMesh Product Manifest",
   "type": "object",
-  "required": ["project", "requirements", "components", "interfaces", "environments", "tests"],
+  "required": [
+    "project",
+    "requirements",
+    "components",
+    "interfaces",
+    "environments",
+    "tests"
+  ],
   "properties": {
-    "schema_version": {"type": "string"},
-    "description": {"type": "string"},
+    "schema_version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
     "project": {
       "type": "object",
-      "required": ["id", "name", "version"],
+      "required": [
+        "id",
+        "name",
+        "version"
+      ],
       "properties": {
-        "id": {"type": "string"},
-        "name": {"type": "string"},
-        "version": {"type": "string"},
-        "lifecycle_stage": {"type": "string"}
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "lifecycle_stage": {
+          "type": "string"
+        }
       },
       "additionalProperties": true
     },
@@ -22,12 +45,31 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "statement"],
+        "required": [
+          "id",
+          "statement"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "statement": {"type": "string"},
-          "criticality": {"enum": ["low", "medium", "high", "critical"]},
-          "verified_by": {"type": "array", "items": {"type": "string"}}
+          "id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "criticality": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "verified_by": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "additionalProperties": true
       }
@@ -36,16 +78,39 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "kind"],
+        "required": [
+          "id",
+          "name",
+          "kind"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "name": {"type": "string"},
-          "kind": {"type": "string"},
-          "target": {"type": "string"},
-          "version": {"type": "string"},
-          "purl": {"type": "string"},
-          "sbom_name": {"type": "string"},
-          "interfaces": {"type": "array", "items": {"type": "string"}}
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "purl": {
+            "type": "string"
+          },
+          "sbom_name": {
+            "type": "string"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "additionalProperties": true
       }
@@ -54,15 +119,33 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "protocol"],
+        "required": [
+          "id",
+          "name",
+          "protocol"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "name": {"type": "string"},
-          "protocol": {"type": "string"},
-          "version": {"type": "string"},
-          "voltage": {"type": "string"},
-          "pins": {"type": "object"},
-          "schema": {"type": "object"}
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "voltage": {
+            "type": "string"
+          },
+          "pins": {
+            "type": "object"
+          },
+          "schema": {
+            "type": "object"
+          }
         },
         "additionalProperties": true
       }
@@ -71,15 +154,32 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "name": {"type": "string"},
-          "os": {"type": "string"},
-          "python": {"type": "string"},
-          "hardware_target": {"type": "string"},
-          "logic_voltage": {"type": "string"},
-          "api_version": {"type": "string"}
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "os": {
+            "type": "string"
+          },
+          "python": {
+            "type": "string"
+          },
+          "hardware_target": {
+            "type": "string"
+          },
+          "logic_voltage": {
+            "type": "string"
+          },
+          "api_version": {
+            "type": "string"
+          }
         },
         "additionalProperties": true
       }
@@ -88,30 +188,64 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "board", "firmware", "logic_voltage"],
+        "required": [
+          "id",
+          "board",
+          "firmware",
+          "logic_voltage"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "name": {"type": "string"},
-          "board": {"type": "string"},
-          "firmware": {"type": "string"},
-          "environment": {"type": "string"},
-          "logic_voltage": {"type": "string"},
-          "interfaces": {"type": "array", "items": {"type": "string"}},
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "board": {
+            "type": "string"
+          },
+          "firmware": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string"
+          },
+          "logic_voltage": {
+            "type": "string"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "constraints": {
             "type": "object",
             "properties": {
-              "min_flash_mb": {"type": "number"},
-              "min_ram_kb": {"type": "number"},
-              "min_clock_mhz": {"type": "number"}
+              "min_flash_mb": {
+                "type": "number"
+              },
+              "min_ram_kb": {
+                "type": "number"
+              },
+              "min_clock_mhz": {
+                "type": "number"
+              }
             },
             "additionalProperties": true
           },
           "specs": {
             "type": "object",
             "properties": {
-              "flash_mb": {"type": "number"},
-              "ram_kb": {"type": "number"},
-              "clock_mhz": {"type": "number"}
+              "flash_mb": {
+                "type": "number"
+              },
+              "ram_kb": {
+                "type": "number"
+              },
+              "clock_mhz": {
+                "type": "number"
+              }
             },
             "additionalProperties": true
           }
@@ -124,31 +258,63 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": {"type": "string"},
-          "role": {"type": "string"},
-          "component": {"type": "string"},
-          "path": {"type": "string"},
-          "remote": {"type": "string"},
-          "ref": {"type": "string"},
-          "commit": {"type": "string"},
-          "required_clean": {"type": "boolean"},
-          "optional": {"type": "boolean"}
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "remote": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "commit": {
+            "type": "string"
+          },
+          "required_clean": {
+            "type": "boolean"
+          },
+          "optional": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": true
       }
     },
     "repository": {
       "oneOf": [
-        {"type": "string"},
+        {
+          "type": "string"
+        },
         {
           "type": "object",
           "properties": {
-            "path": {"type": "string"},
-            "remote": {"type": "string"},
-            "ref": {"type": "string"},
-            "commit": {"type": "string"},
-            "required_clean": {"type": "boolean"},
-            "optional": {"type": "boolean"}
+            "path": {
+              "type": "string"
+            },
+            "remote": {
+              "type": "string"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "commit": {
+              "type": "string"
+            },
+            "required_clean": {
+              "type": "boolean"
+            },
+            "optional": {
+              "type": "boolean"
+            }
           },
           "additionalProperties": true
         }
@@ -158,29 +324,58 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["current"],
+        "required": [
+          "current"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "interface": {"type": "string"},
-          "current": {"type": "string"},
-          "baseline": {"type": "string"},
-          "allow_breaking": {"type": "boolean"},
-          "require_baseline": {"type": "boolean"}
+          "id": {
+            "type": "string"
+          },
+          "interface": {
+            "type": "string"
+          },
+          "current": {
+            "type": "string"
+          },
+          "baseline": {
+            "type": "string"
+          },
+          "allow_breaking": {
+            "type": "boolean"
+          },
+          "require_baseline": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": true
       }
     },
     "sbom": {
       "oneOf": [
-        {"type": "string"},
+        {
+          "type": "string"
+        },
         {
           "type": "object",
           "properties": {
-            "id": {"type": "string"},
-            "path": {"type": "string"},
-            "required_components": {"type": "array", "items": {"type": "string"}},
-            "check_components": {"type": "boolean"},
-            "require_licenses": {"type": "boolean"}
+            "id": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "required_components": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "check_components": {
+              "type": "boolean"
+            },
+            "require_licenses": {
+              "type": "boolean"
+            }
           },
           "additionalProperties": true
         }
@@ -190,16 +385,33 @@
       "type": "array",
       "items": {
         "oneOf": [
-          {"type": "string"},
+          {
+            "type": "string"
+          },
           {
             "type": "object",
-            "required": ["path"],
+            "required": [
+              "path"
+            ],
             "properties": {
-              "id": {"type": "string"},
-              "path": {"type": "string"},
-              "required_components": {"type": "array", "items": {"type": "string"}},
-              "check_components": {"type": "boolean"},
-              "require_licenses": {"type": "boolean"}
+              "id": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "required_components": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "check_components": {
+                "type": "boolean"
+              },
+              "require_licenses": {
+                "type": "boolean"
+              }
             },
             "additionalProperties": true
           }
@@ -210,42 +422,105 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["path"],
+        "required": [
+          "path"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "component": {"type": "string"},
-          "path": {"type": "string"},
-          "sha256": {"type": "string"},
-          "strict": {"type": "boolean"},
+          "id": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "strict": {
+            "type": "boolean"
+          },
           "expected": {
             "type": "object",
             "properties": {
               "ir_version": {
                 "oneOf": [
-                  {"type": "integer"},
-                  {"type": "object", "properties": {"min": {"type": "integer"}, "max": {"type": "integer"}}}
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "min": {
+                        "type": "integer"
+                      },
+                      "max": {
+                        "type": "integer"
+                      }
+                    }
+                  }
                 ]
               },
               "opset": {
                 "oneOf": [
-                  {"type": "integer"},
-                  {"type": "object", "additionalProperties": {"type": "integer"}}
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
+                  }
                 ]
               },
-              "producer_name": {"type": "string"},
-              "inputs": {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}},
-              "outputs": {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}}
+              "producer_name": {
+                "type": "string"
+              },
+              "inputs": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
             },
             "additionalProperties": true
           },
           "quantization": {
             "oneOf": [
-              {"type": "string"},
+              {
+                "type": "string"
+              },
               {
                 "type": "object",
                 "properties": {
-                  "path": {"type": "string"},
-                  "scheme": {"type": "string"}
+                  "path": {
+                    "type": "string"
+                  },
+                  "scheme": {
+                    "type": "string"
+                  }
                 },
                 "additionalProperties": true
               }
@@ -259,20 +534,48 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
-          "id": {"type": "string"},
-          "name": {"type": "string"},
-          "status": {"enum": ["passed", "failed", "blocked", "not_run", "skipped", "pending"]},
-          "executed_at": {"type": "string"},
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "blocked",
+              "not_run",
+              "skipped",
+              "pending"
+            ]
+          },
+          "executed_at": {
+            "type": "string"
+          },
           "checks": {
             "type": "object",
             "properties": {
-              "requirement": {"type": "string"},
-              "component": {"type": "string"},
-              "interface": {"type": "string"},
-              "environment": {"type": "string"},
-              "voltage": {"type": "string"}
+              "requirement": {
+                "type": "string"
+              },
+              "component": {
+                "type": "string"
+              },
+              "interface": {
+                "type": "string"
+              },
+              "environment": {
+                "type": "string"
+              },
+              "voltage": {
+                "type": "string"
+              }
             },
             "additionalProperties": true
           },
@@ -280,13 +583,21 @@
             "type": "array",
             "items": {
               "oneOf": [
-                {"type": "string"},
+                {
+                  "type": "string"
+                },
                 {
                   "type": "object",
                   "properties": {
-                    "path": {"type": "string"},
-                    "sha256": {"type": "string"},
-                    "kind": {"type": "string"}
+                    "path": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    }
                   },
                   "additionalProperties": true
                 }
@@ -300,18 +611,250 @@
     "release": {
       "type": "object",
       "properties": {
-        "block_on_critical": {"type": "boolean"},
-        "block_on_high": {"type": "boolean"},
-        "block_on_medium": {"type": "boolean"},
-        "block_on_low": {"type": "boolean"},
-        "max_critical": {"type": "integer"},
-        "max_high": {"type": "integer"},
-        "max_medium": {"type": "integer"},
-        "allow_dirty_repo": {"type": "boolean"},
-        "require_sbom": {"type": "boolean"},
-        "require_openapi": {"type": "boolean"},
-        "require_evidence": {"type": "boolean"},
-        "required_requirements": {"type": "array", "items": {"type": "string"}}
+        "block_on_critical": {
+          "type": "boolean"
+        },
+        "block_on_high": {
+          "type": "boolean"
+        },
+        "block_on_medium": {
+          "type": "boolean"
+        },
+        "block_on_low": {
+          "type": "boolean"
+        },
+        "max_critical": {
+          "type": "integer"
+        },
+        "max_high": {
+          "type": "integer"
+        },
+        "max_medium": {
+          "type": "integer"
+        },
+        "allow_dirty_repo": {
+          "type": "boolean"
+        },
+        "require_sbom": {
+          "type": "boolean"
+        },
+        "require_openapi": {
+          "type": "boolean"
+        },
+        "require_evidence": {
+          "type": "boolean"
+        },
+        "required_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "firmware": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string"
+            },
+            "required": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "benchmarks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "runtime": {
+            "type": "string"
+          },
+          "device": {
+            "type": "string"
+          },
+          "model_sha256": {
+            "type": "string"
+          },
+          "max_latency_ms": {
+            "type": "number"
+          },
+          "min_throughput_fps": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "hil": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": true
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      ]
+    },
+    "lab": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "required": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "observability": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "additionalProperties": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "electrical": {
+      "type": "object",
+      "properties": {
+        "check_pins": {
+          "type": "boolean"
+        },
+        "check_buses": {
+          "type": "boolean"
+        },
+        "check_power": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "connectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "input": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "governance": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "string"
+        },
+        "sso": {
+          "type": "boolean"
+        },
+        "audit_export": {
+          "type": "boolean"
+        },
+        "rbac": {
+          "type": "boolean"
+        },
+        "retention_days": {
+          "type": "integer"
+        }
       },
       "additionalProperties": true
     }

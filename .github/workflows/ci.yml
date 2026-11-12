@@ -16,8 +16,17 @@ jobs:
           python-version: "3.12"
       - name: Install
         run: python -m pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check productmesh tests
       - name: Unit tests
         run: python -m pytest -q
+      - name: Validate example schemas
+        run: |
+          for manifest in examples/*/product.json; do
+            python -m productmesh.cli validate "$manifest"
+          done
+          python -m productmesh.cli validate examples/lab.json
+          python -m productmesh.cli validate examples/workspace.json
       - name: Audit all example products
         run: |
           for manifest in examples/*/product.json; do
@@ -35,6 +44,23 @@ jobs:
         run: python -m productmesh.cli sbom inspect examples/edge-ai-deployment/sbom.cdx.json
       - name: ONNX metadata inspection
         run: python -m productmesh.cli model inspect examples/edge-ai-deployment/models/tiny.onnx
+      - name: Stub integration smoke tests
+        run: |
+          python -m productmesh.cli connector inspect github examples/connectors/github.json --json > /dev/null
+          python -m productmesh.cli connector inspect jira examples/connectors/jira.json --json > /dev/null
+          python -m productmesh.cli firmware inspect examples/iot-edge-monitor/firmware/esp32-app.bin --json > /dev/null
+          python -m productmesh.cli hil run examples/iot-edge-monitor/hil-plan.json > /dev/null
+          python -m productmesh.cli lab inspect esp32-s3-devkitc-1 > /dev/null
+          python -m productmesh.cli benchmark inspect examples/edge-ai-deployment/benchmarks/ort-cpu.json > /dev/null
+          python -m productmesh.cli otel inspect examples/edge-ai-deployment/observability/spans.json > /dev/null
+          python -m productmesh.cli policy validate --file examples/release-policy.json > /dev/null
+          python -m productmesh.cli enterprise check on_prem --controls examples/enterprise-controls.json > /dev/null
+          python -m productmesh.cli advise examples/iot-edge-monitor/product.json > /dev/null
+          python -m productmesh.cli cloud init --file /tmp/pm-cloud.json --name CI --owner ci > /dev/null
+          python -m productmesh.cli cloud add-member reviewer --role approver --file /tmp/pm-cloud.json > /dev/null
+          python -m productmesh.cli cloud request demo --user reviewer --file /tmp/pm-cloud.json > /dev/null
+          python -m productmesh.cli cloud approve demo --user reviewer --file /tmp/pm-cloud.json > /dev/null
+          python -m productmesh.cli history record --file /tmp/pm-history.jsonl --actor ci --action audit > /dev/null
       - name: Generate SARIF release report
         run: python -m productmesh.cli workspace audit examples/workspace.json --format sarif --output productmesh.sarif
       - name: Upload SARIF

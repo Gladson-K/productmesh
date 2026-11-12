@@ -12,21 +12,26 @@
 - SARIF and Markdown reports.
 - JSON schemas, reusable GitHub Action and expanded CI.
 
-**V2.1 — next:**
-- GitHub/GitLab API connectors for repository and pull-request metadata.
-- Jira/Azure DevOps requirement import.
-- YAML manifest support and richer JSON Schema validation in CI.
-- Firmware binary/version fingerprinting and serial/USB device discovery.
-- More electrical constraints: pin-map conflicts, bus address collisions, power budget.
+**V2.1 — implemented (local-first):**
+- GitHub/GitLab/Jira/Azure DevOps local-export connectors. Network API clients are not implemented.
+- YAML manifest support and JSON Schema validation (`productmesh validate`).
+- Firmware SHA-256/version fingerprinting and serial/USB device discovery.
+- Electrical pin-map conflicts, bus-address collisions and power budgets.
+- Packaged schemas for installed wheels and CI validation.
 
-**V3 — hardware and AI integration:**
-- Hardware-in-the-loop test adapters.
-- Board/firmware fingerprinting and lab inventory.
-- ONNX Runtime/QNN compilation and benchmark evidence.
-- Runtime observability correlation via OpenTelemetry.
+**V3 — implemented as deterministic stubs:**
+- Hardware-in-the-loop adapter interface with mock and serial placeholders.
+- Lab inventory and board/firmware fingerprint lookup.
+- Benchmark evidence ingestion with latency, throughput, runtime and model-hash checks. ONNX Runtime/QNN execution is not implemented.
+- OpenTelemetry span import, summary, required-attribute checks and product/device correlation. No collector or live backend integration.
 
-**V4 — complete product engineering platform:**
-- Cloud workspace, team collaboration and role-based access.
-- Audit history, approvals and policy-as-code.
-- AI-assisted root-cause analysis and compatibility recommendations.
-- Enterprise deployment and release governance.
+**V4 — implemented as deterministic stubs:**
+- Local cloud workspace store with viewer/auditor/approver/admin roles.
+- Local approval workflow and JSONL audit history.
+- Policy-as-code loading and validation.
+- Deterministic heuristic root-cause advice. No hosted AI service.
+- Enterprise on-prem/hybrid/SaaS governance profiles.
+
+**Stub boundary:** roadmap stubs read local files, validate declared metadata and return stable JSON. They do not make network calls, flash hardware, run HIL plans on physical boards, execute benchmarks, collect live telemetry, host multi-user services or provide safety certification.
+
+**Next:** replace stubs with real adapters while preserving the deterministic audit and release-gate contract.

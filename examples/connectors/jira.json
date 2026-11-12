@@ -1,0 +1,21 @@
+{
+  "issues": [
+    {
+      "key": "PM-101",
+      "fields": {
+        "summary": "Verify telemetry contract before release",
+        "description": "The HTTP JSON contract must remain compatible.",
+        "priority": {"name": "High"},
+        "status": {"name": "In Progress"}
+      }
+    },
+    {
+      "key": "PM-102",
+      "fields": {
+        "summary": "Document lab board availability",
+        "priority": {"name": "Medium"},
+        "status": {"name": "To Do"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "block_on_critical": true,
+  "block_on_high": true,
+  "block_on_medium": false,
+  "max_critical": 0,
+  "max_high": 0,
+  "max_medium": 5,
+  "allow_dirty_repo": false,
+  "require_sbom": true,
+  "require_openapi": true,
+  "require_evidence": true
+}

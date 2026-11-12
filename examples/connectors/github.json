@@ -1,0 +1,21 @@
+{
+  "repository": {
+    "full_name": "productmesh/iot-edge-monitor",
+    "html_url": "https://github.com/productmesh/iot-edge-monitor",
+    "default_branch": "main",
+    "pushed_at": "2026-01-15T10:00:00Z"
+  },
+  "head": {
+    "sha": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "pull_requests": [
+    {
+      "number": 42,
+      "title": "Add firmware audit stub",
+      "state": "open",
+      "head": {"sha": "89abcdef0123456789abcdef0123456789abcdef", "ref": "feature/firmware"},
+      "base": {"ref": "main"},
+      "html_url": "https://github.com/productmesh/iot-edge-monitor/pull/42"
+    }
+  ]
+}

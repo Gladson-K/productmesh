@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "name": "ProductMesh reference lab",
+  "description": "Stub lab inventory for the reference products.",
+  "boards": [
+    {
+      "id": "LAB-ESP32-S3",
+      "name": "ESP32-S3 DevKitC",
+      "board": "esp32-s3-devkitc-1",
+      "firmware": "FW-ESP32",
+      "serial": "LAB-ESP32-S3-001",
+      "location": "bench-a",
+      "status": "available",
+      "capabilities": ["wifi", "i2c", "uart"]
+    },
+    {
+      "id": "LAB-ESP32-C3",
+      "name": "ESP32-C3 Mini",
+      "board": "esp32-c3-mini",
+      "firmware": "FW-ESP32",
+      "serial": "LAB-ESP32-C3-001",
+      "location": "bench-a",
+      "status": "ready",
+      "capabilities": ["wifi", "i2c"]
+    },
+    {
+      "id": "LAB-QCS6490",
+      "name": "Qualcomm QCS6490 edge box",
+      "board": "qnn-qcs6490",
+      "firmware": "FW-QNN",
+      "serial": "LAB-QCS6490-001",
+      "location": "bench-b",
+      "status": "available",
+      "capabilities": ["npu", "linux"]
+    },
+    {
+      "id": "LAB-X86",
+      "name": "x86 inference server",
+      "board": "x86-64",
+      "firmware": "FW-ORT",
+      "serial": "LAB-X86-001",
+      "location": "rack-1",
+      "status": "available",
+      "capabilities": ["avx2", "linux"]
+    }
+  ]
+}

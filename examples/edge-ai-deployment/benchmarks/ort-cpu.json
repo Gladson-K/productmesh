@@ -1,0 +1,13 @@
+{
+  "id": "BENCH-ORT-CPU",
+  "runtime": "onnxruntime",
+  "runtime_version": "1.18.0",
+  "device": "DEV-CPU",
+  "model_sha256": "0d5a6e87aaeab7dbdc994e5332ede0df5cae2f6296f7c605d217ccec02c7e8c0",
+  "latency_ms": 12.4,
+  "p50_ms": 11.9,
+  "p95_ms": 14.1,
+  "throughput_fps": 80.6,
+  "compiled": false,
+  "quantization": "int8"
+}

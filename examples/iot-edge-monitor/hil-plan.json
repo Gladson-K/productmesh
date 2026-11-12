@@ -1,0 +1,18 @@
+{
+  "id": "HIL-IOT-SMOKE",
+  "description": "Stub hardware-in-the-loop smoke plan for the IoT edge monitor.",
+  "tests": [
+    {
+      "id": "HIL-TEMP",
+      "name": "Read temperature and humidity",
+      "status": "passed",
+      "duration_ms": 120
+    },
+    {
+      "id": "HIL-HTTP",
+      "name": "Publish telemetry over HTTP",
+      "status": "passed",
+      "duration_ms": 240
+    }
+  ]
+}
