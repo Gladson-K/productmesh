@@ -1,0 +1,6 @@
+{
+  "sso": true,
+  "audit_export": true,
+  "rbac": true,
+  "retention_days": 365
+}

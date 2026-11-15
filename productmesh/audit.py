@@ -1,9 +1,15 @@
 from pathlib import Path
 
+from .benchmarks import audit_benchmarks
 from .devices import audit_devices, device_matrix
+from .electrical import audit_electrical
 from .evidence import audit_evidence
+from .firmware import audit_firmware
+from .hil import audit_hil
 from .issues import count_by_severity, make_issue, sort_issues
+from .lab import audit_lab
 from .manifest import Manifest, as_list, base_dir_for, load_manifest
+from .observability import audit_observability
 from .onnx_meta import audit_models
 from .openapi import audit_api_contracts
 from .policy import evaluate_gate, merge_policy
@@ -129,10 +135,16 @@ def audit(manifest, base_dir=None, policy=None):
     _audit_project(manifest, add)
     _audit_core(manifest, maps, add)
     devices = audit_devices(manifest, maps, add)
+    electrical = audit_electrical(manifest, maps, add)
     repositories = audit_repositories(manifest, maps, add, base)
     api_contracts = audit_api_contracts(manifest, maps, add, base, merge_policy(manifest, policy))
     sboms = audit_sbom(manifest, maps, add, base, merge_policy(manifest, policy))
     models = audit_models(manifest, maps, add, base)
+    firmware = audit_firmware(manifest, maps, add, base)
+    benchmarks = audit_benchmarks(manifest, maps, add, base)
+    hil = audit_hil(manifest, add, base)
+    lab = audit_lab(manifest, add, base)
+    observability = audit_observability(manifest, add, base)
     evidence = audit_evidence(manifest, maps, add, base, merge_policy(manifest, policy))
 
     issues = sort_issues(issues)
@@ -151,6 +163,14 @@ def audit(manifest, base_dir=None, policy=None):
         "api_contracts": len(api_contracts),
         "sboms": len(sboms),
         "models": len(models),
+        "firmware": len(firmware),
+        "benchmarks": len(benchmarks),
+        "hil": len(hil),
+        "lab_boards": lab.get("boards", 0),
+        "observability": len(observability),
+        "electrical_pins": electrical.get("pins", 0),
+        "electrical_buses": electrical.get("buses", 0),
+        "power_budgets": electrical.get("power_budgets", 0),
         "evidence": evidence.get("evidence", 0),
         "by_severity": counts,
     }
@@ -166,6 +186,12 @@ def audit(manifest, base_dir=None, policy=None):
         "api_contracts": api_contracts,
         "sboms": sboms,
         "models": models,
+        "firmware": firmware,
+        "benchmarks": benchmarks,
+        "hil": hil,
+        "lab": lab,
+        "observability": observability,
+        "electrical": electrical,
     }
 
 

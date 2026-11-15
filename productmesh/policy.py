@@ -1,4 +1,5 @@
 from .issues import count_by_severity
+from .manifest import load_data
 
 LEGACY_POLICY_KEYS = {
     "block_on_critical_severity": "block_on_critical",
@@ -36,6 +37,39 @@ def merge_policy(manifest=None, override=None):
     if isinstance(override, dict):
         policy.update(override)
     return policy
+
+
+BOOLEAN_KEYS = (
+    "block_on_critical",
+    "block_on_high",
+    "block_on_medium",
+    "block_on_low",
+    "allow_dirty_repo",
+    "require_sbom",
+    "require_openapi",
+    "require_evidence",
+)
+INTEGER_KEYS = ("max_critical", "max_high", "max_medium")
+
+
+def load_policy(path):
+    data = load_data(path)
+    if not isinstance(data, dict):
+        raise TypeError("Release policy must be an object.")
+    return merge_policy(override=data)
+
+
+def validate_policy(policy):
+    errors = []
+    for key in BOOLEAN_KEYS:
+        if key in policy and not isinstance(policy[key], bool):
+            errors.append({"path": key, "message": "Expected a boolean."})
+    for key in INTEGER_KEYS:
+        if key in policy and policy[key] is not None and not isinstance(policy[key], int):
+            errors.append({"path": key, "message": "Expected an integer or null."})
+    if "required_requirements" in policy and not isinstance(policy["required_requirements"], list):
+        errors.append({"path": "required_requirements", "message": "Expected an array."})
+    return {"valid": not errors, "errors": errors, "policy": policy, "status": "stub"}
 
 
 def _limit_exceeded(count, limit):

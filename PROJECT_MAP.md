@@ -3,18 +3,31 @@
 - `productmesh/`: lifecycle audit engine, CLI and local HTTP server
   - `audit.py`: core checks and orchestration
   - `devices.py`: multi-device compatibility
+  - `electrical.py`: pin, bus and power checks
   - `repo.py`: Git repository inspection
   - `openapi.py`: OpenAPI contract diff
   - `sbom.py`: CycloneDX/SPDX ingestion
   - `onnx_meta.py`: ONNX metadata parser
+  - `firmware.py`: firmware fingerprinting and device discovery
+  - `benchmarks.py`: benchmark evidence checks
+  - `hil.py`: HIL adapter stubs
+  - `lab.py`: lab inventory and board lookup
+  - `observability.py`: OpenTelemetry span import and correlation
+  - `connectors.py`: local connector export normalization
   - `evidence.py`: test status and evidence hashes
-  - `policy.py`: release gate
+  - `policy.py`: release gate and policy-as-code validation
+  - `schema.py`: JSON Schema validation
   - `workspace.py`: multi-product workspace audit
+  - `cloud.py`: local cloud workspace and approvals
+  - `history.py`: JSONL audit history
+  - `ai.py`: deterministic root-cause advice
+  - `enterprise.py`: enterprise governance profiles
   - `report.py`: SARIF and Markdown reports
-- `examples/`: three products plus `workspace.json`, OpenAPI specs, SBOM, ONNX model and quantization metadata
-- `schemas/`: product and workspace JSON Schemas
+- `examples/`: three products plus `workspace.json`, `lab.json`, connector exports, firmware/runtime artifacts, HIL plan, benchmark record, OpenTelemetry spans, release policy and governance controls
+- `schemas/`: product, workspace and lab JSON Schemas
+- `productmesh/schemas/`: packaged schema copies for installed wheels
 - `productmesh/web/`: local dashboard asset
-- `tests/`: audit, device, workspace, repository, OpenAPI, SBOM, ONNX, evidence, report, CLI and server tests
+- `tests/`: audit, device, workspace, repository, OpenAPI, SBOM, ONNX, evidence, report, CLI, server and roadmap-stub tests
 - `docs/`: architecture, V2 feature guide, research, use cases and roadmap
 - `action.yml`: reusable GitHub Action release gate
 - `.github/workflows/`: CI

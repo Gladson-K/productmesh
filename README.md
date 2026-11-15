@@ -1,14 +1,14 @@
-# ProductMesh V2
+# ProductMesh V2.1
 
 **Connect every stage. Detect every mismatch.**
 
 ProductMesh is a cross-discipline product lifecycle integrity workspace. It connects requirements, software, firmware, hardware-facing interfaces, environments, AI/ML artifacts, repositories, SBOMs, verification evidence and release policy so incompatibilities are detected before they become expensive integration failures.
 
-V2 is a local-first Python engine with a multi-product workspace, a device fleet model and a read-only dashboard. It complements rather than replaces GitHub/GitLab, Jira, PLM/MBSE, CAD/EDA, CI/CD and observability tools.
+V2.1 is a local-first Python engine with a multi-product workspace, a device fleet model, a read-only dashboard and deterministic stubs for the V3/V4 roadmap. It complements rather than replaces GitHub/GitLab, Jira, PLM/MBSE, CAD/EDA, CI/CD and observability tools. Stubs normalize local exports and declared metadata; they do not call external services or drive real hardware.
 
-## V2 capabilities
+## Capabilities
 
-| Area | V2 implementation |
+| Area | Implementation |
 | --- | --- |
 | Multi-product workspace | `workspace.json` audits many products and aggregates release status |
 | Multiple devices per product | Board, firmware, environment, voltage, interface and resource checks |
@@ -20,6 +20,12 @@ V2 is a local-first Python engine with a multi-product workspace, a device fleet
 | Reports | Human output, JSON, SARIF 2.1.0 and Markdown |
 | Dashboard | Workspace summary, product audit and device matrix |
 | CI/CD | GitHub Actions workflow and reusable `action.yml` release gate |
+| Connectors | Local GitHub/GitLab/Jira/Azure DevOps JSON export normalization |
+| Firmware and lab | Firmware fingerprinting, serial discovery, lab inventory and board lookup |
+| Electrical | Pin-map conflicts, bus-address collisions and power-budget checks |
+| HIL and benchmarks | Mock/serial HIL adapters, benchmark evidence and regression limits |
+| Observability | OpenTelemetry span import, service summary and product/device correlation |
+| Cloud and governance | Local cloud workspace store, RBAC, approvals, audit history and enterprise profiles |
 
 V1 compatibility is preserved: existing product manifests, `audit` output and the three original examples continue to work.
 
@@ -29,6 +35,7 @@ Python 3.10+ is required. Core functionality uses only the standard library.
 
 ```bash
 ./setup.sh
+.venv/bin/python -m productmesh.cli validate examples/iot-edge-monitor/product.json
 .venv/bin/python -m productmesh.cli audit examples/iot-edge-monitor/product.json
 .venv/bin/python -m productmesh.cli workspace audit examples/workspace.json
 .venv/bin/python -m productmesh.cli serve
@@ -54,6 +61,24 @@ productmesh repo inspect <path-or-remote-url> [--json]
 productmesh openapi diff <baseline> <current> [--json] [--fail-on-breaking]
 productmesh sbom inspect <sbom.json> [--json]
 productmesh model inspect <model.onnx> [--json]
+productmesh validate <file> [--schema product|workspace|lab|PATH] [--json]
+productmesh connector list [--json]
+productmesh connector inspect <github|gitlab|jira|azure_devops> <export.json> [--json]
+productmesh connector import <name> <export.json> [--output FILE]
+productmesh firmware inspect <artifact> [--json]
+productmesh firmware discover [--root PATTERN] [--json]
+productmesh device discover [--root PATTERN] [--json]
+productmesh hil list [--json]
+productmesh hil run <plan.json> [--adapter mock|serial]
+productmesh lab list [--inventory FILE] [--json]
+productmesh lab inspect <board> [--inventory FILE] [--json]
+productmesh benchmark inspect <record.json> [--json]
+productmesh otel inspect <spans.json> [--json]
+productmesh cloud init|status|add-member|request|approve|history [options]
+productmesh history record|list|summary [options]
+productmesh policy show|validate [--file FILE]
+productmesh advise [manifest] [--json]
+productmesh enterprise profile|check <on_prem|hybrid|saas> [--controls FILE]
 productmesh serve [--host HOST] [--port PORT]
 ```
 
@@ -161,6 +186,68 @@ CycloneDX and SPDX JSON are supported. Checks cover required components, declare
 
 ONNX metadata is parsed directly from the protobuf wire format; the `onnx` package is not required. Checks cover IR/opset drift, input/output names, dtype, static shape dimensions, artifact hash and quantization metadata consistency.
 
+## Roadmap stub integrations
+
+The V2.1/V3/V4 roadmap is exposed as deterministic local stubs. They normalize files, validate declarations and produce machine-readable results, but do not perform network calls, drive hardware or run benchmarks.
+
+### Connectors
+
+```bash
+productmesh connector list
+productmesh connector inspect github examples/connectors/github.json --json
+productmesh connector import jira examples/connectors/jira.json --output jira-fragment.json
+```
+
+Local exports for GitHub, GitLab, Jira and Azure DevOps are normalized into repository, pull-request, merge-request and requirement fragments. `azure_devops` is accepted as an alias for `azure`.
+
+### Firmware, electrical and lab
+
+```json
+"firmware": [
+  {"id": "FW-ESP32", "component": "CMP-FW", "path": "firmware/esp32-app.bin", "version": "0.1.0"}
+],
+"electrical": {"check_pins": true, "check_buses": true, "check_power": true},
+"lab": {"path": "../lab.json"}
+```
+
+Checks cover firmware SHA-256/version drift, serial device discovery, pin conflicts, bus-address collisions, power budgets, lab inventory presence and board availability. Use `firmware inspect`, `device discover`, `lab list` and `lab inspect`.
+
+### HIL, benchmarks and observability
+
+```json
+"hil": [{"id": "HIL-IOT", "adapter": "mock", "plan": "hil-plan.json"}],
+"benchmarks": [
+  {
+    "id": "BENCH-ORT-CPU",
+    "path": "benchmarks/ort-cpu.json",
+    "runtime": "onnxruntime",
+    "max_latency_ms": 50,
+    "min_throughput_fps": 20
+  }
+],
+"observability": {
+  "path": "observability/spans.json",
+  "required_attributes": ["service.name", "productmesh.product", "productmesh.device"]
+}
+```
+
+The mock HIL adapter is deterministic; the serial adapter is a placeholder. Benchmark checks compare declared latency/throughput limits and model hashes. OpenTelemetry checks summarize spans, flag missing required attributes and correlate spans by product/device.
+
+### Cloud, history, policy and advice
+
+```bash
+productmesh cloud init --file cloud-workspace.json --name Demo --owner alice
+productmesh cloud add-member bob --role approver --file cloud-workspace.json
+productmesh cloud request iot-edge-monitor --user bob --file cloud-workspace.json
+productmesh cloud approve iot-edge-monitor --user bob --file cloud-workspace.json
+productmesh history record --actor ci --action audit --target iot-edge-monitor
+productmesh policy validate --file examples/release-policy.json
+productmesh advise examples/iot-edge-monitor/product.json --json
+productmesh enterprise check on_prem --controls examples/enterprise-controls.json
+```
+
+Cloud workspaces use a local JSON store with viewer/auditor/approver/admin roles. Audit history is JSONL. Policy-as-code validates release policy files. Advice is deterministic heuristic output, not a hosted AI service. Enterprise profiles declare on-prem, hybrid or SaaS governance expectations.
+
 ## Evidence and release policy
 
 ```json
@@ -185,9 +272,12 @@ Failed/blocked tests, missing evidence, evidence hash drift, SBOM/OpenAPI requir
 
 ## Examples
 
-- `examples/iot-edge-monitor`: ESP32 firmware, sensor bus, HTTP API, two devices, voltage checks.
+- `examples/iot-edge-monitor`: ESP32 firmware, sensor bus, HTTP API, two devices, voltage checks, firmware artifact, lab inventory link and mock HIL plan.
 - `examples/mobile-api-contract`: mobile/backend OpenAPI v1→v2 contract diff and environment profiles.
-- `examples/edge-ai-deployment`: ONNX model, quantization metadata, CycloneDX SBOM and two deployment targets.
+- `examples/edge-ai-deployment`: ONNX model, quantization metadata, CycloneDX SBOM, benchmark record, OpenTelemetry spans and two deployment targets.
+- `examples/lab.json`: shared lab inventory for the reference boards.
+- `examples/connectors/`: GitHub, GitLab, Jira and Azure DevOps local export fixtures.
+- `examples/release-policy.json` and `examples/enterprise-controls.json`: policy-as-code and governance fixtures.
 - `examples/workspace.json`: all three products in one fleet workspace.
 
 ## CI and GitHub Action
@@ -206,11 +296,11 @@ Use the composite action in another repository:
 
 ## JSON schemas
 
-Editor and CI schemas are provided in `schemas/product.schema.json` and `schemas/workspace.schema.json`.
+Editor and CI schemas are provided in `schemas/product.schema.json`, `schemas/workspace.schema.json` and `schemas/lab.schema.json`. Packaged copies live in `productmesh/schemas/` so installed wheels can validate files with `productmesh validate`.
 
 ## Limitations
 
-Checks operate on declared metadata, repository state, artifacts and evidence. They do not perform physical electrical measurements, PCB parsing, source semantic analysis, hardware-in-the-loop testing or accelerator benchmarking. A green gate means the declared V2 checks passed, not that the product is physically safe or functionally correct.
+Checks operate on declared metadata, repository state, artifacts, local exports and evidence. The roadmap stubs do not perform physical electrical measurements, PCB parsing, source semantic analysis, real hardware-in-the-loop execution, accelerator benchmarking, network connector calls or hosted AI analysis. A green gate means the declared checks passed, not that the product is physically safe or functionally correct. Install `jsonschema` for full schema validation (`pip install productmesh[schema]`).
 
 ## Documentation
 

@@ -27,6 +27,9 @@ JSON manifest; requirement-to-test coverage; broken component/interface/test/env
 ## V2 scope
 Multi-product workspaces; multi-device fleets; Git repository state and commit/ref checks; OpenAPI baseline/current contract diff; CycloneDX/SPDX SBOM ingestion; ONNX metadata and quantization checks; evidence hashes; policy-based release gates; SARIF/Markdown reports; JSON schemas; reusable GitHub Action. V2 still validates declared metadata and artifacts, not physical hardware behaviour.
 
+## V2.1 and roadmap stubs
+Local connector export normalization; YAML and schema validation; firmware and serial device discovery; electrical pin/bus/power checks; mock/serial HIL adapters; lab inventory; benchmark evidence; OpenTelemetry span correlation; local cloud workspace, RBAC, approvals, JSONL history, policy-as-code, deterministic advice and enterprise governance profiles. These stubs are local-first and deterministic; they do not call external APIs, run physical hardware, execute benchmarks or host multi-user services.
+
 ## Risks and validation
 Manifest quality/ownership can become overhead. Static checks cannot establish functional correctness, safety, security or real physical compatibility. Pilot across one embedded, one app/API and one edge-AI team. Encode 10–20 historical integration defects per team and measure defect coverage, precision/false positives, diagnosis time and manifest maintenance time. Continue only if useful defects surface earlier without high upkeep.
 

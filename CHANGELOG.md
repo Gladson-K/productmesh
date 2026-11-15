@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.3.0 — V2.1 and roadmap stubs
+
+### Added
+- JSON/YAML schema validation CLI with packaged product, workspace and lab schemas.
+- Local GitHub, GitLab, Jira and Azure DevOps export connectors.
+- Firmware fingerprinting, serial/USB discovery and firmware artifact checks.
+- Electrical pin-map, bus-address and power-budget checks.
+- Mock/serial HIL adapters and HIL plan runner.
+- Lab inventory lookup and board availability checks.
+- Benchmark evidence checks for latency, throughput, runtime, device and model hash.
+- OpenTelemetry span import, summary and product/device correlation.
+- Local cloud workspace store with RBAC and approvals.
+- JSONL audit history and deterministic root-cause advice.
+- Policy-as-code loading/validation and enterprise governance profiles.
+- New example fixtures for lab inventory, connectors, firmware, HIL, benchmarks, OpenTelemetry, release policy and governance controls.
+- Schema, connector, firmware, electrical, HIL, lab, benchmark, observability, cloud, history, policy, advice and enterprise tests.
+
+### Changed
+- Package version bumped to `0.3.0`.
+- Development extras now include `jsonschema` and `ruff`.
+- Audit summaries include firmware, benchmark, HIL, lab, observability and electrical counts.
+- README, architecture, roadmap, project map and CI cover the stub integrations.
+
+### Stub boundary
+- Connectors use local exports; no external API calls.
+- HIL uses a deterministic mock adapter; serial execution is a placeholder.
+- Benchmarks, OpenTelemetry and cloud features operate on local files only.
+- AI advice is deterministic heuristics; no hosted model or service.
+
 ## 0.2.0 — V2
 
 ### Added

@@ -139,3 +139,15 @@ Legacy V1 keys such as `block_on_high_severity` are accepted as aliases for the 
 ## What V2 deliberately does not do
 
 V2 does not measure physical voltage, parse PCB layouts, inspect firmware binaries, execute hardware-in-the-loop tests, run model benchmarks or call GitHub/Jira APIs. Those remain V3/V4 integrations. Repository and remote checks are read-only.
+
+## Roadmap stubs added in 0.3.0
+
+- Local connector exports for GitHub, GitLab, Jira and Azure DevOps.
+- YAML manifests and `productmesh validate` schema validation.
+- Firmware fingerprinting, serial discovery and electrical checks.
+- Mock/serial HIL adapters and lab inventory lookup.
+- Benchmark evidence checks and OpenTelemetry span correlation.
+- Local cloud workspace, RBAC, approvals, JSONL history, policy-as-code and deterministic advice.
+- Enterprise on-prem/hybrid/SaaS governance profiles.
+
+These are deterministic local stubs. They validate declared files and metadata but do not call external APIs, run physical hardware, execute benchmarks, collect live telemetry or host multi-user services.

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://productmesh.dev/schemas/workspace.schema.json",
+  "title": "ProductMesh Workspace",
+  "type": "object",
+  "required": ["workspace", "products"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "workspace": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "description": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "products": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"type": "string"},
+          {
+            "type": "object",
+            "required": ["manifest"],
+            "properties": {
+              "id": {"type": "string"},
+              "manifest": {"type": "string"},
+              "policy": {"type": "object"},
+              "devices": {"type": "array"}
+            },
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,13 @@
+{
+  "workItems": [
+    {
+      "id": 501,
+      "fields": {
+        "System.Title": "Validate edge AI benchmark budget",
+        "System.Description": "Latency and throughput must stay within the declared limits.",
+        "Microsoft.VSTS.Common.Priority": "1",
+        "System.State": "Active"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "service.name", "value": {"stringValue": "edge-inference"}},
+          {"key": "productmesh.product", "value": {"stringValue": "edge-ai-deployment"}},
+          {"key": "productmesh.device", "value": {"stringValue": "DEV-CPU"}}
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {"name": "productmesh.stub"},
+          "spans": [
+            {
+              "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+              "spanId": "00f067aa0ba902b7",
+              "name": "model.infer",
+              "status": {"code": "OK"},
+              "attributes": [
+                {"key": "model.id", "value": {"stringValue": "MDL-TINY"}},
+                {"key": "model.runtime", "value": {"stringValue": "onnxruntime"}}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

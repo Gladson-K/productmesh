@@ -164,5 +164,31 @@
         "ram_kb": 400
       }
     }
-  ]
+  ],
+  "firmware": [
+    {
+      "id": "FW-ESP32",
+      "component": "CMP-FW",
+      "path": "firmware/esp32-app.bin",
+      "version": "0.1.0",
+      "required": true
+    }
+  ],
+  "lab": {
+    "path": "../lab.json",
+    "required": true
+  },
+  "hil": [
+    {
+      "id": "HIL-IOT",
+      "adapter": "mock",
+      "plan": "hil-plan.json",
+      "required": true
+    }
+  ],
+  "electrical": {
+    "check_pins": true,
+    "check_buses": true,
+    "check_power": true
+  }
 }

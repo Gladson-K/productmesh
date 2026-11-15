@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "productmesh"
-version = "0.2.0"
+version = "0.3.0"
 requires-python = ">=3.10"
 description = "Cross-discipline product lifecycle integrity checker for software, firmware, hardware, AI models and release evidence"
 readme = "README.md"
@@ -26,7 +26,8 @@ dependencies = []
 
 [project.optional-dependencies]
 yaml = ["PyYAML>=6"]
-dev = ["pytest>=8", "PyYAML>=6"]
+schema = ["jsonschema>=4"]
+dev = ["pytest>=8", "PyYAML>=6", "jsonschema>=4", "ruff>=0.6"]
 
 [project.scripts]
 productmesh = "productmesh.cli:main"
@@ -35,7 +36,7 @@ productmesh = "productmesh.cli:main"
 include = ["productmesh*"]
 
 [tool.setuptools.package-data]
-productmesh = ["web/*.html"]
+productmesh = ["web/*.html", "schemas/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "tests"]

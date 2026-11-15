@@ -6,7 +6,7 @@ Requirements → board/sensor selection → interfaces → firmware → API/UI �
 
 Representative failures: 3.3V/5V mismatch, pin-map conflict, stale firmware/API payload, board revision drift, unsupported sensor driver, developer-machine-only build.
 
-V2 example: `examples/iot-edge-monitor/product.json` declares an ESP32 firmware component, an I2C sensor bus, an HTTP/JSON contract and two ESP32 device variants. The audit checks interface voltage against both the environment and each device, plus firmware target and resource constraints.
+V2.1 example: `examples/iot-edge-monitor/product.json` declares an ESP32 firmware component, an I2C sensor bus, an HTTP/JSON contract and two ESP32 device variants. The audit checks interface voltage against both the environment and each device, plus firmware target/resource constraints, firmware hash/version, lab inventory, electrical pins/power and a mock HIL plan.
 
 ## 2. Mobile app + backend
 
@@ -22,7 +22,7 @@ Train → export → quantize → compile → integrate → benchmark → OTA.
 
 Representative failures: tensor shape/dtype mismatch, unsupported operator/runtime, quantization metadata separated from weights, wrong runtime version, memory/latency constraint violations, performance regression after deployment.
 
-V2 example: `examples/edge-ai-deployment/product.json` declares an ONNX model, expected tensor contract, quantization metadata, CycloneDX SBOM and two devices (Qualcomm QNN and x86 ONNX Runtime). The audit parses the ONNX protobuf directly, checks IR/opset/dtype/shape/hash/quantization consistency and validates the SBOM inventory.
+V2.1 example: `examples/edge-ai-deployment/product.json` declares an ONNX model, expected tensor contract, quantization metadata, CycloneDX SBOM and two devices (Qualcomm QNN and x86 ONNX Runtime). The audit parses the ONNX protobuf directly, checks IR/opset/dtype/shape/hash/quantization consistency, validates the SBOM inventory, checks benchmark latency/throughput and correlates OpenTelemetry spans by product/device.
 
 ## Using one workspace for several open-source products
 

@@ -23,9 +23,20 @@ def load_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def load_data(path):
+    source = Path(path)
+    if source.suffix.lower() in (".yaml", ".yml"):
+        try:
+            import yaml
+        except ImportError as exc:
+            raise RuntimeError("YAML support requires PyYAML: pip install productmesh[yaml]") from exc
+        return yaml.safe_load(source.read_text(encoding="utf-8"))
+    return load_json(source)
+
+
 def load_manifest(path):
     source = Path(path).expanduser().resolve()
-    data = load_json(source)
+    data = load_data(source)
     missing = [key for key in REQUIRED_FIELDS if key not in data]
     if missing:
         raise ValueError(f"Missing top-level field: {missing[0]}")
@@ -34,7 +45,7 @@ def load_manifest(path):
 
 def load_workspace(path):
     source = Path(path).expanduser().resolve()
-    data = load_json(source)
+    data = load_data(source)
     if "workspace" not in data:
         raise ValueError("Missing top-level field: workspace")
     return Workspace(data, base_dir=source.parent, source_path=source)

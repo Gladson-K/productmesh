@@ -9,7 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def iot_data():
-    return json.loads((ROOT / "examples/iot-edge-monitor/product.json").read_text(encoding="utf-8"))
+    data = json.loads((ROOT / "examples/iot-edge-monitor/product.json").read_text(encoding="utf-8"))
+    for key in ("firmware", "lab", "hil", "benchmarks", "observability"):
+        data.pop(key, None)
+    return data
 
 
 def iot_manifest():

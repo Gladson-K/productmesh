@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://productmesh.dev/schemas/lab.schema.json",
+  "title": "ProductMesh Lab Inventory",
+  "type": "object",
+  "required": ["boards"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "name": {"type": "string"},
+    "description": {"type": "string"},
+    "boards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "board"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "board": {"type": "string"},
+          "firmware": {"type": "string"},
+          "serial": {"type": "string"},
+          "location": {"type": "string"},
+          "status": {"type": "string"},
+          "capabilities": {"type": "array", "items": {"type": "string"}},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
